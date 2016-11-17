@@ -92,7 +92,7 @@ struct
   let string value = Exp.constant (Const.string value)
   let int value    = Exp.constant (Const.int value)
   let pattern s    = Pat.var (loc s)
-  (* let _unit        = Exp.construct (ident "()") None *)
+  let _unit        = Exp.construct (ident "()") None
   (* let some x       = Exp.construct (ident "Some") (Some x) *)
 
   (* Import a function *)
@@ -151,7 +151,7 @@ let create_matched hash i =
   in
 Exp.(apply coersion [Nolabel, e])
 
-(* Create the expresion function to extract arguments *)
+(* Create the expresion function to match arguments *)
 let expr_fun len guard hash =
   let err = Util.import_function "Error" "raise_" in
   let result = Exp.let_ Nonrecursive [Vb.mk (Util.pattern "raw_result") guard] in
@@ -175,3 +175,60 @@ let expr_fun len guard hash =
       ]
   )
 
+(* Create the function to extract arguments *)
+let route_args_function guard gexp i case hash=
+  let f =
+    if i >= 1 then 
+      Exp.let_ Nonrecursive [
+        Vb.mk
+          (Util.pattern "route_arguments")
+          (Exp.fun_ Nolabel None (Util.pattern "()") (expr_fun i gexp hash))
+      ] case.pc_rhs
+    else case.pc_rhs     
+  in  {
+    pc_lhs    = Util.pattern "router_route_uri"
+  ; pc_guard  = merge_guard guard case.pc_guard
+  ; pc_rhs    = f
+}
+
+(* Create the regexp expression *)
+let create_regex reg =
+  let to_reg = Util.import_function "Regexp" "regexp" in
+  let matchs = Util.import_function "Regexp" "string_match" in
+  let to_opt = Util.import_function "Option" "is_some" in 
+  let str    = Util.string reg in
+  let regex  = Exp.(apply to_reg [Nolabel, str]) in
+  let app    =
+    Exp.(apply matchs [
+        Nolabel, regex
+      ; Nolabel, Util.exp_ident "router_route_uri"
+      ; Nolabel, Util.int 0
+      ])
+  in (Exp.(apply to_opt [Nolabel, app]), app)
+
+(* Mapper for case expression *)
+let case_mapper mapper case =
+    match case.pc_lhs.ppat_desc with
+  | Ppat_extension ({txt = "route"; loc=_}, pl) ->
+    let (reg, clause, hash) = extract_regex pl in
+    let (guard, gexp) = create_regex reg in
+    route_args_function guard gexp clause case hash
+  | _ -> Ast_mapper.(default_mapper.case mapper case)
+
+
+
+(* Mapper for expression *)
+let expr_mapper mapper expr =
+  match expr.pexp_desc with
+  | Pexp_match (exp, cases) when match_route exp ->
+    let f = Util.import_function "Router" "routes" in
+    Exp.(
+      Exp.match_
+        (apply f [Nolabel, Util._unit])
+        (List.map (case_mapper mapper) cases)
+    )
+  | _ -> Ast_mapper.(default_mapper.expr mapper expr)
+
+(* General mapper *)
+let router_mapper = Ast_mapper.{ default_mapper with expr = expr_mapper }
+let () = Ast_mapper.run_main (fun _ -> router_mapper)
