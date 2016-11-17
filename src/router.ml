@@ -41,7 +41,6 @@ let rec watch event args f =
 
 (* start the routing *)
 let start f =
-  let _ = f () in
   let _ = watch_once Lwt_js_events.onload  () (fun _ -> f()) in
   let _ = watch Lwt_js_events.onhashchange () (fun _ -> f()) in
   ()

@@ -6,14 +6,14 @@ JSOCAML  = js_of_ocaml +weak.js +toplevel.js
 
 # Specific rule
 all: example.js
-	rm -rf *.byte
-	rm -rf *.cm*
+	rm -rf src/*.byte
+	rm -rf src/*.cm*
 
 
 # Generic rules
 
 %.byte: src/%.ml
-	$(OCAML) $(QUASAR) -dsource -linkpkg -o $(@) $(<)
+	$(OCAML) $(ROUTER) -dsource -linkpkg -o $(@) $(<)
 
 %.js: %.byte
 	$(JSOCAML) -o $(@) $(<)

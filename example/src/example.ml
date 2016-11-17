@@ -9,7 +9,7 @@ let alert s =
    Dom_html.window##alert(Js.string s)
 
 let () =
-  match (getById "") with
+  match (getById "app") with
   | None -> alert "Error"
   | Some elt ->
     Router.start (fun () ->

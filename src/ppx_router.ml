@@ -221,7 +221,7 @@ let case_mapper mapper case =
 let expr_mapper mapper expr =
   match expr.pexp_desc with
   | Pexp_match (exp, cases) when match_route exp ->
-    let f = Util.import_function "Router" "routes" in
+    let f = Util.import_function "Router" "get_route" in
     Exp.(
       Exp.match_
         (apply f [Nolabel, Util._unit])
