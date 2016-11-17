@@ -20,8 +20,31 @@
 *)
 
 (* Useful tools *)
+exception Runtime_error of string
+
 let window   = Dom_html.window
-let location = window##.location 
+let location = window##.location
+
+let raise_ message =
+  let _ = window##alert (Js.string message) in
+  let _ = Firebug.console##log(Js.string message) in
+  raise (Runtime_error message)
+
+let watch_once event args f =
+  let%lwt result = event args in
+  let _ = f result in
+  Lwt.return ()
+
+let rec watch event args f =
+  let%lwt _ = watch_once event args f in
+  watch event args f
+
+(* start the routing *)
+let start f =
+  let _ = f () in
+  let _ = watch_once Lwt_js_events.onload  () (fun _ -> f()) in
+  let _ = watch Lwt_js_events.onhashchange () (fun _ -> f()) in
+  ()
 
 (* Get the current hash *)
 let get_hash () =
@@ -37,3 +60,41 @@ let set_hash value =
 
 (* Clean the current hash *)
 let clean_hash () = set_hash ""
+
+(* Alias for conveinence *)
+let get_route   = get_hash
+let set_route   = set_hash
+let clean_route = clean_hash
+
+(* Coersion tools *)
+ let coersion_int = function
+  | Some str -> begin
+      try int_of_string str
+      with _ -> raise_ "Unable to coers string into int"
+    end 
+  | None -> raise_ "Unable to coers string into int"
+        
+
+let coersion_float = function
+  | Some str -> begin
+      try float_of_string str
+      with _ -> raise_ "Unable to coers string into float"
+    end
+  | None -> raise_ "Unable to coers string into float"
+              
+let coersion_bool = function
+  | Some str -> str <> "false"
+  | None -> raise_ "Unable to coers string into bool"
+
+
+let coersion_char = function
+  | Some str ->
+    if (String.length str) <> 1 then
+      raise_ "Unable to coers string into char"
+    else str.[0]
+  | None -> raise_ "Unable to coers string into char"
+    
+
+let coersion_string = function
+  | Some str -> str
+| None -> raise_ "Unable to coers string into string"

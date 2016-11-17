@@ -1,6 +1,7 @@
+
 S .
 S src/*
 B _build/src/*
 B _build
-PKG js_of_ocaml js_of_ocaml.ppx
+PKG js_of_ocaml js_of_ocaml.ppx lwt.ppx
 EXT js
