@@ -89,16 +89,16 @@ struct
 
   (* Define recurrent expresions *)
   let exp_ident x  = Exp.ident (ident x)
-  (* let string value = Exp.constant (Const.string value) *)
-  (* let int value    = Exp.constant (Const.int value) *)
-  (* let pattern s    = Pat.var (loc s) *)
+  let string value = Exp.constant (Const.string value)
+  let int value    = Exp.constant (Const.int value)
+  let pattern s    = Pat.var (loc s)
   (* let _unit        = Exp.construct (ident "()") None *)
   (* let some x       = Exp.construct (ident "Some") (Some x) *)
 
   (* Import a function *)
-  (* let import_function modname funcname = *)
-  (*   loc Longident.(Ldot (Lident modname, funcname)) *)
-  (*   |> Exp.ident *)
+  let import_function modname funcname =
+    loc Longident.(Ldot (Lident modname, funcname))
+    |> Exp.ident
 
 end
 
@@ -138,4 +138,40 @@ let extract_regex = function
       | _ -> (".*", 0, empty_hash)
     end
   | _ -> (".*", 0, empty_hash)
+
+(* Create the matched function *)
+let create_matched hash i =
+  let k = Hashtbl.find hash i in
+  let f = Util.import_function "Regexp" "matched_group" in
+  let coersion = Util.import_function "Router" ("coersion_"^k) in
+  let e = Exp.( apply f [
+      Nolabel, Util.exp_ident "result"
+    ; Nolabel, Util.int i
+    ])
+  in
+Exp.(apply coersion [Nolabel, e])
+
+(* Create the expresion function to extract arguments *)
+let expr_fun len guard hash =
+  let err = Util.import_function "Error" "raise_" in
+  let result = Exp.let_ Nonrecursive [Vb.mk (Util.pattern "raw_result") guard] in
+  let rec aux acc i =
+    if i > len then List.rev acc
+    else aux ((create_matched hash i)::acc) (succ i)
+  in
+  let expr =
+    if len > 1 then Exp.tuple (aux [] 1)
+    else create_matched hash 1 in 
+  result (
+    Exp.match_
+      (Util.exp_ident "raw_result")
+      [
+        Exp.case
+          (Pat.construct (Util.ident "Some") (Some (Util.pattern "result")))
+          expr
+      ; Exp.case
+          (Pat.construct (Util.ident "None") None)
+          (Exp.apply err [Nolabel, Util.string "Error during matching route"])
+      ]
+  )
 
