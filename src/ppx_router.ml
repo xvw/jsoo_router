@@ -83,23 +83,59 @@ struct
     { txt = value; loc = loc }
   let loc = define_loc
 
-  (*  Define an identifier *)
+  (* Define an identifier *)
   let ident ?(loc = !default_loc) value =
     define_loc ~loc (Longident.Lident value)
 
   (* Define recurrent expresions *)
   let exp_ident x  = Exp.ident (ident x)
-  let string value = Exp.constant (Const.string value)
-  let int value    = Exp.constant (Const.int value)
-  let pattern s    = Pat.var (loc s)
-  let _unit        = Exp.construct (ident "()") None
-  let some x       = Exp.construct (ident "Some") (Some x)
+  (* let string value = Exp.constant (Const.string value) *)
+  (* let int value    = Exp.constant (Const.int value) *)
+  (* let pattern s    = Pat.var (loc s) *)
+  (* let _unit        = Exp.construct (ident "()") None *)
+  (* let some x       = Exp.construct (ident "Some") (Some x) *)
 
   (* Import a function *)
-  let import_function modname funcname =
-    loc Longident.(Ldot (Lident modname, funcname))
-    |> Exp.ident
+  (* let import_function modname funcname = *)
+  (*   loc Longident.(Ldot (Lident modname, funcname)) *)
+  (*   |> Exp.ident *)
 
 end
 
+(* Check if a match expression is a router *)
+let match_route exp =
+  match exp.pexp_desc with
+  | Pexp_extension
+      ({txt = "routes"; loc=_},  _) -> true
+  | _ -> false
+
+(* Merge old guard with new guards *)
+let merge_guard other = function
+  | None -> Some other
+  | Some x ->
+    Some
+      Exp.(apply (Util.exp_ident "&&") [
+          Nolabel, x
+        ; Nolabel, other
+        ])
+
+(* Extract pattern (with a regex) from a string *)
+let extract_pattern_regex str =
+  let (r,i, hash) = Reg.create str in
+  let matcher = Printf.sprintf "^%s$" r
+  in (matcher, i, hash)
+
+(* Empty hash placeholder *)
+let empty_hash = Hashtbl.create 10
+
+(* Extract the regexp from an expression *)
+let extract_regex = function
+  | PStr [{pstr_desc = Pstr_eval (e, _); _}] ->
+    begin
+      match e.pexp_desc with
+      | Pexp_constant (Pconst_string (str, _)) ->
+        extract_pattern_regex str
+      | _ -> (".*", 0, empty_hash)
+    end
+  | _ -> (".*", 0, empty_hash)
 
