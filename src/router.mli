@@ -66,3 +66,7 @@ val coersion_bool   : string option -> bool
 val coersion_char   : string option -> char
   
 val coersion_string : string option -> string
+
+val is_some : 'a option -> bool
+
+val raise_ : string -> 'a

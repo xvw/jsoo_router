@@ -96,4 +96,8 @@ let coersion_char = function
 
 let coersion_string = function
   | Some str -> str
-| None -> raise_ "Unable to coers string into string"
+  | None -> raise_ "Unable to coers string into string"
+
+let is_some = function
+  | None -> false
+  | Some _ -> true

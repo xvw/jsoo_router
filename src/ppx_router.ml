@@ -153,7 +153,7 @@ Exp.(apply coersion [Nolabel, e])
 
 (* Create the expresion function to match arguments *)
 let expr_fun len guard hash =
-  let err = Util.import_function "Error" "raise_" in
+  let err = Util.import_function "Router" "raise_" in
   let result = Exp.let_ Nonrecursive [Vb.mk (Util.pattern "raw_result") guard] in
   let rec aux acc i =
     if i > len then List.rev acc
@@ -195,7 +195,7 @@ let route_args_function guard gexp i case hash=
 let create_regex reg =
   let to_reg = Util.import_function "Regexp" "regexp" in
   let matchs = Util.import_function "Regexp" "string_match" in
-  let to_opt = Util.import_function "Option" "is_some" in 
+  let to_opt = Util.import_function "Router" "is_some" in 
   let str    = Util.string reg in
   let regex  = Exp.(apply to_reg [Nolabel, str]) in
   let app    =
