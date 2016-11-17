@@ -91,11 +91,14 @@ struct
   let exp_ident x  = Exp.ident (ident x)
   let string value = Exp.constant (Const.string value)
   let int value    = Exp.constant (Const.int value)
-  let _true        = Exp.construct (ident "true") None
-  let _false       = Exp.construct (ident "false") None
   let pattern s    = Pat.var (loc s)
   let _unit        = Exp.construct (ident "()") None
   let some x       = Exp.construct (ident "Some") (Some x)
+
+  (* Import a function *)
+  let import_function modname funcname =
+    loc Longident.(Ldot (Lident modname, funcname))
+    |> Exp.ident
 
 end
 
