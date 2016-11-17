@@ -53,9 +53,7 @@ Document api
   BuildTools+:          ocamldoc
   InstallDir:           $htmldir/router
   XOCamlbuildPath:      .
-  XOCamlbuildLibraries:
-    router,
-    router.ppx
+  XOCamlbuildLibraries: router
   Install:              true
   XOCamlbuildExtraArgs: "-docflags '-colorize-code -charset utf-8 -hide Pervasives'"
 

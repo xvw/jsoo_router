@@ -19,12 +19,16 @@
  *
 *)
 
-(** {2 Exceptions} *)
+(**
+ This module is the entry point for Routing manipulation. 
+*)
+
+(** {3 Exceptions} *)
 
 (** Exceptions throwed when a runtime error is occured *)
 exception Runtime_error of string
 
-(** {2 Utils functions} *)
+(** {3 Utils functions} *)
 
 (** [Router.get_hash ()] returns the value of the current hash *)
 val get_hash : unit -> string
@@ -35,7 +39,7 @@ val set_hash : string -> unit
 (** [Router.clean_hash ()] remove the hash *)
 val clean_hash : unit -> unit
 
-(** {2 Routing functions} *)
+(** {3 Routing functions} *)
 
 (** [Router.start f] starts routing *)
 val start : (unit -> 'a) -> unit
@@ -49,7 +53,7 @@ val set_route : string -> unit
 (** [Router.clean_route] is equals to [Router.clean_hash] *)
 val clean_route : unit -> unit
 
-(** {2 Coersion functions} *)
+(** {3 Coersion functions} *)
 (** Those functions are used for the extension point (PPX) and should not 
     be uses *)
 
