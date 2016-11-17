@@ -19,6 +19,7 @@
  *
 *)
 
+(* Raise an error (with the location) *)
 let raise_error ?(loc = !Ast_helper.default_loc) message =
   let open Location in
 raise (Error (error ~loc message))
@@ -63,6 +64,39 @@ struct
         | c -> variable (cons acc c) (succ i)
                  
     in aux 0 "" 0
-      
 
 end
+
+
+(* Open common libs *)
+open Parsetree
+open Asttypes
+open Ast_helper
+
+
+(* Usefuls tools for elt creation *)
+module Util =
+struct
+
+  (* Define a simple location *)
+  let define_loc ?(loc = !default_loc) value =
+    { txt = value; loc = loc }
+  let loc = define_loc
+
+  (*  Define an identifier *)
+  let ident ?(loc = !default_loc) value =
+    define_loc ~loc (Longident.Lident value)
+
+  (* Define recurrent expresions *)
+  let exp_ident x  = Exp.ident (ident x)
+  let string value = Exp.constant (Const.string value)
+  let int value    = Exp.constant (Const.int value)
+  let _true        = Exp.construct (ident "true") None
+  let _false       = Exp.construct (ident "false") None
+  let pattern s    = Pat.var (loc s)
+  let _unit        = Exp.construct (ident "()") None
+  let some x       = Exp.construct (ident "Some") (Some x)
+
+end
+
+
