@@ -52,7 +52,18 @@ Using `[%route ...]` you can use regex in the route definition.
 
 
 ## Routes with variables
-### Internals types
+
+You can use `[%route "some-{type}-{other-type}"]` to define variables 
+into route. Here is the list of available types :
+
+#### Internals types
+
+-  `string`
+-  `int`
+-  `bool`
+-  `char`
+-  `float`
+
 ### Extract variables from the route
 ## Example of a simple router
 
