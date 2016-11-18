@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="Up" href="index.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Router" rel="Chapter" href="Router.html"><link title="Exceptions" rel="Section" href="#3_Exceptions">
+<link title="Utils functions" rel="Section" href="#3_Utilsfunctions">
+<link title="Routing functions" rel="Section" href="#3_Routingfunctions">
+<link title="Coersion functions" rel="Section" href="#3_Coersionfunctions">
+<title>Router</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Module <a href="type_Router.html">Router</a></h1>
+
+<pre><span class="keyword">module</span> Router: <code class="code"><span class="keyword">sig</span></code> <a href="Router.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+This module is the entry point for Routing manipulation.<br>
+</div>
+<hr width="100%">
+<br>
+<h3 id="3_Exceptions">Exceptions</h3><br>
+
+<pre><span id="EXCEPTIONRuntime_error"><span class="keyword">exception</span> Runtime_error</span> <span class="keyword">of</span> <code class="type">string</code></pre>
+<div class="info ">
+Exceptions throwed when a runtime error is occured<br>
+</div>
+<br>
+<h3 id="3_Utilsfunctions">Utils functions</h3><br>
+
+<pre><span id="VALget_hash"><span class="keyword">val</span> get_hash</span> : <code class="type">unit -> string</code></pre><div class="info ">
+<code class="code"><span class="constructor">Router</span>.get_hash&nbsp;()</code> returns the value of the current hash<br>
+</div>
+
+<pre><span id="VALset_hash"><span class="keyword">val</span> set_hash</span> : <code class="type">string -> unit</code></pre><div class="info ">
+<code class="code"><span class="constructor">Router</span>.set_hash&nbsp;<span class="string">"foo"</span></code> sets the current hash with <code class="code"><span class="keywordsign">#</span>foo</code><br>
+</div>
+
+<pre><span id="VALclean_hash"><span class="keyword">val</span> clean_hash</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<code class="code"><span class="constructor">Router</span>.clean_hash&nbsp;()</code> remove the hash<br>
+</div>
+<br>
+<h3 id="3_Routingfunctions">Routing functions</h3><br>
+
+<pre><span id="VALstart"><span class="keyword">val</span> start</span> : <code class="type">(unit -> 'a) -> unit</code></pre><div class="info ">
+<code class="code"><span class="constructor">Router</span>.start&nbsp;f</code> starts routing<br>
+</div>
+
+<pre><span id="VALget_route"><span class="keyword">val</span> get_route</span> : <code class="type">unit -> string</code></pre><div class="info ">
+<code class="code"><span class="constructor">Router</span>.get_route</code> is equals to <code class="code"><span class="constructor">Router</span>.get_hash</code><br>
+</div>
+
+<pre><span id="VALset_route"><span class="keyword">val</span> set_route</span> : <code class="type">string -> unit</code></pre><div class="info ">
+<code class="code"><span class="constructor">Router</span>.set_route</code> is equals to <code class="code"><span class="constructor">Router</span>.set_hash</code><br>
+</div>
+
+<pre><span id="VALclean_route"><span class="keyword">val</span> clean_route</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<code class="code"><span class="constructor">Router</span>.clean_route</code> is equals to <code class="code"><span class="constructor">Router</span>.clean_hash</code><br>
+</div>
+<br>
+<h3 id="3_Coersionfunctions">Coersion functions</h3><br>
+<br>
+Those functions are used for the extension point (PPX) and should not 
+    be uses<br>
+
+<pre><span id="VALcoersion_int"><span class="keyword">val</span> coersion_int</span> : <code class="type">string option -> int</code></pre>
+<pre><span id="VALcoersion_float"><span class="keyword">val</span> coersion_float</span> : <code class="type">string option -> float</code></pre>
+<pre><span id="VALcoersion_bool"><span class="keyword">val</span> coersion_bool</span> : <code class="type">string option -> bool</code></pre>
+<pre><span id="VALcoersion_char"><span class="keyword">val</span> coersion_char</span> : <code class="type">string option -> char</code></pre>
+<pre><span id="VALcoersion_string"><span class="keyword">val</span> coersion_string</span> : <code class="type">string option -> string</code></pre>
+<pre><span id="VALis_some"><span class="keyword">val</span> is_some</span> : <code class="type">'a option -> bool</code></pre>
+<pre><span id="VALraise_"><span class="keyword">val</span> raise_</span> : <code class="type">string -> 'a</code></pre></body></html>
