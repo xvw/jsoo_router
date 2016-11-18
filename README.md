@@ -25,11 +25,13 @@ The module `Router` expose a `start : (unit -> 'a) -> unit` function. `Router.st
 `f` when the hash is changed. For example you can try this code
 : `Router.start (fun () -> alert "changement")`
 
+> In this code, I'm using `alert` defined as `let alert s = Dom_html.window##alert(Js.string s)`
+
 ## Manage routes
 You can match routes using `match [%routes] with ...`. For example :
 
 ```ocaml
-Router.start (fun () ->
+let () = Router.start (fun () ->
   match [%routes] with
   | "foo" -> alert "Foo's page"
   | "bar" -> alert "Bar's page"
@@ -42,7 +44,7 @@ Router.start (fun () ->
 ### [%route] for complex routes construction
 
 ```ocaml
-Router.start (fun () ->
+let () = Router.start (fun () ->
   match [%routes] with
   | "foo"                    -> alert "Foo's page"
   | "bar"                    -> alert "Bar's page"
@@ -75,10 +77,7 @@ Those variables could be extract with the function `route_arguments ()`. This fu
 returns a n-uplet of the all extracted variables in the order of their definition.
 
 ```ocaml
-let alert s = Dom_html.window##alert(Js.string s)
-
-let () =
-  Router.start (fun () ->
+  let () = Router.start (fun () ->
       match [%routes] with
       | "foo"                            -> alert "Foo's page"
       | "bar"                            -> alert "Bar's page"
