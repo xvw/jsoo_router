@@ -8,12 +8,18 @@
 
 **Jsoo_router** is a tool that allows to easily realize single-page-app via a router
 On the hash ( `# url`). The library exposes a function to start routing and a syntax 
-extension to use pattern matching to define routes.
+extension to use pattern matching to define routes. The documentation of the Router module 
+is available [here](https://xvw.github.io/jsoo_router/doc/).
 
 
 ## Installation
 ### Use with OCamlfind
+
 ## Watch hash transformation
+The module `Router` expose a `start : (unit -> 'a) -> unit` function. `Router.start f` execute
+`f` when the hash is changed. For example you can try this code
+: `Router.start (fun () -> alert "changement")`
+
 ## Manage routes
 ## Routes with variables
 ### Internals types

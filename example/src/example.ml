@@ -53,6 +53,6 @@ let routing elt () =
 let () =
   match (getById "app") with
   | None -> alert "Error"
-  | Some elt -> Router.start (routing elt)
+  | Some elt -> Router.start (fun () -> alert "changement")
 
 
