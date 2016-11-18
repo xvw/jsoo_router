@@ -1,4 +1,4 @@
-Name: router
+Name: jsoo_router
 Version: 0.1
 Synopsis: An extension point for routing using hash
 Description: A super simple tool to write single page app
@@ -11,9 +11,9 @@ BuildTools: ocamlbuild, ocamldoc
 Plugins: META (0.4), DevFiles (0.4)
 AlphaFeatures: ocamlbuild_more_args
 
-Library router
+Library jsoo_router
   Path:           src
-  FindlibName:    router
+  FindlibName:    jsoo_router
   Install:        true
   Modules:
     Router
@@ -27,16 +27,16 @@ Library router
 Library ppx
   Path:           src
   FindlibName:    ppx
-  FindlibParent:  router
+  FindlibParent:  jsoo_router
   Modules:        Ppx_router
   XMETAType:      syntax
   BuildDepends:
     str,
     compiler-libs,
     compiler-libs.common,
-    router
+    jsoo_router
   CompiledObject:   best
-  XMETARequires:    router
+  XMETARequires:    jsoo_router
   XMETAExtraLines:  ppx = "ppx_router"
 
 Executable ppx_router
@@ -51,9 +51,9 @@ Document api
   Title:                Documentation and API reference for Router
   Type:                 ocamlbuild (0.4)
   BuildTools+:          ocamldoc
-  InstallDir:           $htmldir/router
+  InstallDir:           $htmldir/jsoo_router
   XOCamlbuildPath:      .
-  XOCamlbuildLibraries: router
+  XOCamlbuildLibraries: jsoo_router
   Install:              true
   XOCamlbuildExtraArgs: "-docflags '-colorize-code -charset utf-8 -hide Pervasives'"
 

@@ -2,7 +2,7 @@
 
 # Small tools to be fast to generate files
 lib=`opam config var lib`
-boot="$lib/router"
+boot="$lib/jsoo_router"
 
 if [ "$1" = "clean" ];
 then
