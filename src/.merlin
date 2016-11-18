@@ -1,5 +1,0 @@
-
-B ../../_build/**
-S ../../lib/**
-PKG compiler-libs.common
-REC
