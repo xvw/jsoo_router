@@ -34,6 +34,21 @@ Router.start (fun () ->
 
 ```
 
+### [%route] for complex routes construction
+
+```ocaml
+Router.start (fun () ->
+  match [%routes] with
+  | "foo"                    -> alert "Foo's page"
+  | "bar"                    -> alert "Bar's page"
+  | ""                       -> alert "Index's page"
+  | [%route "foo-(bar|foo)"] -> alert "Using regex"
+  | [%route "digit-[0-9]"]   -> alert "Regex with a digit"
+  | _                        -> alert "Unmanaged page"
+)
+```
+
+Using `[%route ...]` you can use regex in the route definition.
 
 
 ## Routes with variables

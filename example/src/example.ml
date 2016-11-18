@@ -55,10 +55,12 @@ let () =
   | None -> alert "Error"
   | Some elt -> Router.start (fun () ->
       match [%routes] with
-      | "foo" -> alert "Foo's page"
-      | "bar" -> alert "Bar's page"
-      | ""    -> alert "Index's page"
-      | _     -> alert "Unmanaged page"
+      | "foo"                    -> alert "Foo's page"
+      | "bar"                    -> alert "Bar's page"
+      | [%route "foo-(bar|foo)"] -> alert "Using regex"
+      | [%route "digit-[0-9]"]   -> alert "Regex with a digit"
+      | ""                       -> alert "Index's page"
+      | _                        -> alert "Unmanaged page"
     )
 
 
