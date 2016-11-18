@@ -53,6 +53,12 @@ let routing elt () =
 let () =
   match (getById "app") with
   | None -> alert "Error"
-  | Some elt -> Router.start (fun () -> alert "changement")
+  | Some elt -> Router.start (fun () ->
+      match [%routes] with
+      | "foo" -> alert "Foo's page"
+      | "bar" -> alert "Bar's page"
+      | ""    -> alert "Index's page"
+      | _     -> alert "Unmanaged page"
+    )
 
 

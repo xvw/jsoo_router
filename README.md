@@ -21,6 +21,21 @@ The module `Router` expose a `start : (unit -> 'a) -> unit` function. `Router.st
 : `Router.start (fun () -> alert "changement")`
 
 ## Manage routes
+You can match routes using `match [%routes] with ...`. For example :
+
+```ocaml
+Router.start (fun () ->
+  match [%routes] with
+  | "foo" -> alert "Foo's page"
+  | "bar" -> alert "Bar's page"
+  | ""    -> alert "Index's page"
+  | _     -> alert "Unmanaged page"
+)
+
+```
+
+
+
 ## Routes with variables
 ### Internals types
 ### Extract variables from the route
