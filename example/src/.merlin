@@ -1,5 +1,0 @@
-S .
-B .
-PKG router
-PKG router.ppx
-EXT js

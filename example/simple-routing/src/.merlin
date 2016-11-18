@@ -1,0 +1,6 @@
+S .
+B .
+PKG js_of_ocaml, js_of_ocaml.ppx
+PKG jsoo_router
+PKG jsoo_router.ppx
+EXT js
