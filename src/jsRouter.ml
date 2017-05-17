@@ -21,3 +21,31 @@
  * SOFTWARE.
  *)
 
+type separator = string
+
+type routing_style = 
+  | Hash
+  | History 
+  | Infered
+
+type routing_method = (routing_style * separator)
+
+module type REQUIREMENT =
+sig 
+  type t
+  val routing_method : routing_method
+end
+
+module type ROUTING_TABLE = 
+sig 
+  include REQUIREMENT
+  val watch: (string -> 'a) -> 'a
+end
+
+
+module New (M : REQUIREMENT) : ROUTING_TABLE with type t = M.t =
+struct 
+  include M
+  let watch f = f ""
+end
+

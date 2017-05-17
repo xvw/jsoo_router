@@ -20,3 +20,52 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *)
+
+
+(** This module provides tools to build a [RoutingTable]. A RoutingTable is a 
+    module which have the functionnalities of watching url (hash or history) 
+    modification.
+*)
+
+(** {2 Routing Method } 
+    A router uses a style of routing (using HistoryAPI or Hash).
+*)
+
+(** A Separator between members of an URI *)
+type separator = string
+
+(** The kind of the routing style. *)
+type routing_style = 
+  | Hash     (** Uses the hash (url likes [#/foo/bar]) *)
+  | History  (** Uses the HistoryAPI (url likes [/foo/bar]) *)
+  | Infered  (** Try to uses [History] *)
+
+(** A [routing_method] is a couple between a style and a separator*)
+type routing_method = (routing_style * separator)
+
+(** {2 Generics interfaces} *)
+
+(** The requirement to build a RoutingTable *)
+module type REQUIREMENT =
+sig 
+
+  (** An enumeration of each of the routes members *)
+  type t
+
+  val routing_method : routing_method
+  (** The routing style *)
+end
+
+(** The general interface of a module for routing *)
+module type ROUTING_TABLE = 
+sig 
+  include REQUIREMENT
+
+  (** [watch f] perform f on each url changement *)
+  val watch: (string -> 'a) -> 'a
+end
+
+
+(** {2 Functor to build a routing table} *)
+
+module New (M : REQUIREMENT) : ROUTING_TABLE

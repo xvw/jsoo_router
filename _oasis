@@ -6,6 +6,11 @@ Authors: Xavier Van de Woestyne <xaviervdw@gmail.com>
 Homepage: http://github.com/xvw/jsoo_router
 License: MIT
 
+OASISFormat: 0.4
+BuildTools: ocamlbuild, ocamldoc
+Plugins: META (0.4), DevFiles (0.4)
+AlphaFeatures: ocamlbuild_more_args
+
 Library jsoo_router
   Path:           src
   FindlibName:    jsoo_router
@@ -18,3 +23,19 @@ Library jsoo_router
     lwt.ppx,
     js_of_ocaml (>= 2.8.1),
     js_of_ocaml.ppx
+
+Document api
+  Title:                Documentation and API reference for Jsoo_router
+  Type:                 ocamlbuild (0.4)
+  BuildTools+:          ocamldoc
+  InstallDir:           $htmldir/jsoo_router
+  XOCamlbuildPath:      .
+  XOCamlbuildLibraries: jsoo_router
+  Install:              true
+  PostCommand:          cp doc.css api.docdir/style.css
+  XOCamlbuildExtraArgs: "-docflags '-colorize-code -charset utf-8 -hide Pervasives'"
+
+SourceRepository master
+  Type:     git
+  Location: https://github.com/xvw/jsoo_router.git
+  Browser: https://github.com/xvw/jsoo_router

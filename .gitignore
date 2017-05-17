@@ -1,0 +1,24 @@
+*.annot
+*.cmo
+*.cma
+*.cmi
+*.a
+*.o
+*.cmx
+*.cmxs
+*.cmxa
+
+# ocamlbuild working directory
+_build/
+
+# ocamlbuild targets
+*.byte
+*.native
+
+# Js_of_ocaml output
+*.js 
+*.map
+
+# oasis generated files
+setup.data
+setup.log
