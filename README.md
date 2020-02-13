@@ -1,10 +1,9 @@
-> This readme is work in progress
+> This project is an experience and is not maintened
 
 # JSOO_Router
 
 > Jsoo_router is a tool to facilitate front-end routing. 
-> This library uses a syntax extension (ppx). This tool was extracted from Work In Progress
-> Quasar Famework : https://github.com/xvw/quasar
+> This library uses a syntax extension (ppx).
 
 **Jsoo_router** is a tool that allows to easily realize single-page-app via a router
 On the hash ( `# url`). The library exposes a function to start routing and a syntax 
